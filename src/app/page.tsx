@@ -4,14 +4,15 @@ import Image from 'next/image';
 import { Dispatch, SetStateAction, useState } from 'react';
 
 type ListTodo = {
+  id: number;
   name: string;
   checked: boolean;
 };
 
 export default function Home() {
   const [list, setList] = useState([
-    { name: 'belajar js', checked: false },
-    { name: 'belajar ts', checked: true },
+    { id: 1, name: 'belajar js', checked: false },
+    { id: 2, name: 'belajar ts', checked: true },
   ]);
 
   return (
@@ -47,9 +48,16 @@ function ListGroup({
   list: Array<ListTodo>;
   setList: Dispatch<SetStateAction<ListTodo[]>>;
 }) {
-
-  function handleCheck() {
-    setList([])
+  function handleCheck(id: number) {
+    let newList: Array<ListTodo> = list.map((val, key) => {
+      if(val.id == id) {
+        return { id: val.id, name: val.name, checked: !val.checked }
+      } else {
+        return { id: val.id, name: val.name, checked: val.checked }
+      }
+    });
+    console.log(newList);
+    setList(newList);
   }
 
   return (
@@ -63,7 +71,7 @@ function ListGroup({
               name=""
               id=""
               checked={val.checked ? true : false}
-              onChange={() => handleCheck()}
+              onChange={() => handleCheck(val.id)}
             />
           </li>
         );
