@@ -15,26 +15,44 @@ export default function Home() {
     { id: 2, name: 'belajar ts', checked: true },
   ]);
 
+  function handleInput(input: string): void {
+    // console.log(list.length);
+    let newItem: ListTodo = { id: list.length + 1, name: input, checked: false };
+    let newList = [...list, newItem];
+    setList(newList);
+  }
+
   return (
     <main className="flex flex-col items-center gap-5">
       <h1 className="text-3xl font-bold leading-9">Todo-List-To</h1>
       <div className="group flex flex-col gap-6">
-        <Input />
+        <Input handleInput={(input) => handleInput(input)} />
         <ListGroup list={list} setList={setList} />
       </div>
     </main>
   );
 }
 
-function Input() {
+function Input({ handleInput }: { handleInput: (input: string) => void }) {
+  const [curInput, setCurInput] = useState('');
+
+  function handleInputChange(e: string) {
+    setCurInput(e);
+  }
+
   return (
     <div className="input-group flex gap-6">
       <input
         className="mih-h-[40px] min-w-[240px] rounded-lg border border-gray-800 p-2 text-base placeholder:text-base"
         type="text"
         placeholder="isi list ini"
+        value={curInput}
+        onChange={(e) => handleInputChange(e.target.value)}
       />
-      <button className="rounded-lg border border-gray-800 bg-green-500 p-2 text-white">
+      <button
+        className="rounded-lg border border-gray-800 bg-green-500 p-2 text-white"
+        onClick={() => handleInput(curInput)}
+      >
         Tambah
       </button>
     </div>
@@ -50,10 +68,10 @@ function ListGroup({
 }) {
   function handleCheck(id: number) {
     let newList: Array<ListTodo> = list.map((val, key) => {
-      if(val.id == id) {
-        return { id: val.id, name: val.name, checked: !val.checked }
+      if (val.id == id) {
+        return { ...val, checked: !val.checked };
       } else {
-        return { id: val.id, name: val.name, checked: val.checked }
+        return { id: val.id, name: val.name, checked: val.checked };
       }
     });
     console.log(newList);
