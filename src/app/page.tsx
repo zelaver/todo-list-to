@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { Dispatch, SetStateAction, useState } from 'react';
+import { RiCloseLine } from '@remixicon/react';
 
 type ListTodo = {
   id: number;
@@ -16,9 +17,10 @@ export default function Home() {
   ]);
 
   function handleInput(input: string): void {
-    // console.log(list.length);
+    // console.log(list[list.length - 1]);
+    if (input == '') return;
     let newItem: ListTodo = {
-      id: list.length + 1,
+      id: list[list.length - 1].id + 1,
       name: input,
       checked: false,
     };
@@ -89,13 +91,27 @@ function ListGroup({
     setList(newList);
   }
 
+  function handleDelete(id: number) {
+    let newList: Array<ListTodo> = list.filter(val => val.id !== id);
+    // console.log(newList);
+    setList(newList);
+  }
+
   return (
     <div className="list-group rounded-xl border border-slate-800 bg-green-50">
       {list.map((val: ListTodo, key) => {
         return (
           <li key={key} className="flex justify-between border-b px-4 py-2">
-            <p>{val.name}</p>
+            <button>
+              <RiCloseLine
+                color="red"
+                size={20}
+                onClick={() => handleDelete(val.id)}
+              />
+            </button>
+            <p className="mr-auto">{val.name}</p>
             <input
+              className="accent-green-800"
               type="checkbox"
               name=""
               id=""
