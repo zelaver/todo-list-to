@@ -17,7 +17,11 @@ export default function Home() {
 
   function handleInput(input: string): void {
     // console.log(list.length);
-    let newItem: ListTodo = { id: list.length + 1, name: input, checked: false };
+    let newItem: ListTodo = {
+      id: list.length + 1,
+      name: input,
+      checked: false,
+    };
     let newList = [...list, newItem];
     setList(newList);
   }
@@ -40,6 +44,12 @@ function Input({ handleInput }: { handleInput: (input: string) => void }) {
     setCurInput(e);
   }
 
+  function handleInputKeyDown(e: any) {
+    if (e.key === 'Enter') {
+      handleInput(curInput);
+    }
+  }
+
   return (
     <div className="input-group flex gap-6">
       <input
@@ -48,6 +58,7 @@ function Input({ handleInput }: { handleInput: (input: string) => void }) {
         placeholder="isi list ini"
         value={curInput}
         onChange={(e) => handleInputChange(e.target.value)}
+        onKeyDown={(e) => handleInputKeyDown(e)}
       />
       <button
         className="rounded-lg border border-gray-800 bg-green-500 p-2 text-white"
