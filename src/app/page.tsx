@@ -20,7 +20,7 @@ export default function Home() {
     // console.log(list[list.length - 1]);
     if (input == '') return;
     let newItem: ListTodo = {
-      id: list[list.length - 1].id + 1,
+      id: (list.length == 0)? 1 : list[list.length - 1].id + 1,
       name: input,
       checked: false,
     };
@@ -98,7 +98,7 @@ function ListGroup({
   }
 
   return (
-    <div className="list-group rounded-xl border border-slate-800 bg-green-50">
+    <div className={`list-group rounded-xl border border-slate-800 bg-green-50 ${list.length == 0 ? 'invisible': ''}`}>
       {list.map((val: ListTodo, key) => {
         return (
           <li key={key} className="flex justify-between border-b px-4 py-2">
